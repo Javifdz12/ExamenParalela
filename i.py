@@ -3,52 +3,79 @@ import time
 import random
 from queue import Queue
 
+
+class Gasolinera(threading.Thread):
+    surtidores=[]
+    for i in range(N):
+        surtidores.append(1)
+        surtidores[i]=threading.Lock()
+    def __init__(self, N):
+        threading.Thread.__init__(self)
+        self.caja=Queue()
+
+    def ocupada(self):
+        x=0
+        for i in self.surtidores:
+            if i.locked()==True:
+                x+=1
+            else:pass
+        if x==N:
+            return True
+        else:pass
+    def cobrar(self):
+        if self.caja.empty()==False:
+            self.caja.get()
+            time.sleep(1)
+            self.caja.task_done()
+        else:pass
+    def run(self):
+        self.cobrar()
+
+
 class Car(threading.Thread):
-    def __init__(self, id, gas_pump, cashier):
+    def __init__(self, id, gasolinera):
         threading.Thread.__init__(self)
         self.id = id
-        self.gas_pump = gas_pump
-        self.cashier = cashier
-
+        self.gasolinera = gasolinera
     def run(self):
-        self.arrive()
-        self.gas_up()
+        self.llegar()
+        self.elegir_surtidor()
+        self.echar_gasolina()
         self.go_to_cashier()
-        self.leave()
 
-    def arrive(self):
+    def llegar(self):
         print("Car %d arrives at the gas station." % self.id)
         time.sleep(random.randint(1, T))
 
-    def gas_up(self):
+    def elegir_surtidor(self):
+        if self.gasolinera.ocupada!=True:
+            for i in self.gasolinera.surtidores:
+                if i.locked()==False:
+                    return i
+                else:pass
+        else:
+            self.elegir_surtidor()
+
+    def echar_gasolina(self):
         print("Car %d begins to refuel." % self.id)
+        self.elegir_surtidor().acquire()
         time.sleep(random.randint(5, 10))
-        self.gas_pump.release()
+        self.elegir_surtidor().release()
         print("Car %d finishes refueling and leaves the pump." % self.id)
 
     def go_to_cashier(self):
-        self.cashier_queue.put(self)
-        self.cashier.acquire()
-        print("Car %d begins to pay." % self.id)
         time.sleep(3)
-        self.cashier.release()
-        self.cashier_queue.get()
+        self.gasolinera.caja.put()
+        print('Car %d esta en caja')
 
-    def leave(self):
-        print("Car %d leaves the gas station." % self.id)
 
+gasolinera=Gasolinera(4)
 def generate_cars():
     for i in range(1, 51):
-        Car(i, gas_pump, cashier).start()
-        time.sleep(random.randint(1, T))
+        Car(i, gasolinera).start()
+        time.sleep(1)
 
-T = 15
-N = 1
-gas_pump = threading.BoundedSemaphore(N)
-cashier = threading.BoundedSemaphore(1)
-cashier_queue = Queue()
 
+gasolinera.start()
 generate_cars()
 
-average_time = (T * 100) / 50
-print("The average time per car is %.2f seconds." % average_time)
