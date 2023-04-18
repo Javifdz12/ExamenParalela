@@ -7,7 +7,7 @@ class Gasolinera:
     def __init__(self, ventana, num_surtidores):
         self.ventana = ventana
         self.num_surtidores = num_surtidores
-        self.canvas = tk.Canvas(self.ventana, width=800, height=600)
+        self.canvas = tk.Canvas(self.ventana, width=1000, height=800)
         self.canvas.pack()
         self.surtidores = [None] * self.num_surtidores
         self.mutex = threading.Lock()
@@ -68,7 +68,7 @@ if __name__ == "__main__":
     ventana.title("Gasolinera")
 
     # Crear objeto de la clase Gasolinera
-    gasolinera = Gasolinera(ventana, 3) # Puedes ajustar el número de surtidores aquí
+    gasolinera = Gasolinera(ventana, 4) # Puedes ajustar el número de surtidores aquí
 
     # Dibujar los surtidores en la ventana
     gasolinera.dibujar_surtidores()
