@@ -49,6 +49,7 @@ class Coche(threading.Thread):
                 txt2=self.gasolinera.canvas.create_text(150 + i * 200, 100 + self.id_coche * 20, text="Coche {} llenando el depósito".format(self.id_coche))
                 time.sleep(random.uniform(0.5, 1))
                 self.gasolinera.canvas.delete(txt2)
+                self.gasolinera.liberar_surtidor(surtidor)
                 txt3=self.gasolinera.canvas.create_text(150 + i * 200, 100 + self.id_coche * 20, text="Coche {} en la cola de la caja".format(self.id_coche))
                 time.sleep(random.uniform(0.5, 1))
                 self.gasolinera.canvas.delete(txt3)
@@ -56,7 +57,6 @@ class Coche(threading.Thread):
                 time.sleep(random.uniform(0.5, 1))
                 self.gasolinera.canvas.delete(txt4)
                 txt5=self.gasolinera.canvas.create_text(150 + i * 200, 100 + self.id_coche * 20, text="Coche {} saliendo de la gasolinera".format(self.id_coche))
-                self.gasolinera.liberar_surtidor(surtidor)
                 time.sleep(random.uniform(0.5, 1))
                 self.gasolinera.canvas.delete(txt5)
             else:
