@@ -41,26 +41,26 @@ class Coche(threading.Thread):
         llegada_gasolinera = random.randint(1, 15)
         time.sleep(llegada_gasolinera)
         surtidor = self.gasolinera.ocupar_surtidor(self.id_coche)
-        if surtidor is not None :
-            txt1=self.gasolinera.canvas.create_text(400, 100 + self.id_coche * 20, text="Coche {} en surtidor {}".format(self.id_coche, surtidor + 1))
-            time.sleep(random.uniform(0.5, 1))
-            self.gasolinera.canvas.delete(txt1)
-            txt2=self.gasolinera.canvas.create_text(400, 100 + self.id_coche * 20, text="Coche {} llenando el depósito".format(self.id_coche))
-            time.sleep(random.uniform(0.5, 1))
-            self.gasolinera.canvas.delete(txt2)
-            txt3=self.gasolinera.canvas.create_text(400, 100 + self.id_coche * 20, text="Coche {} en la cola de la caja".format(self.id_coche))
-            time.sleep(random.uniform(0.5, 1))
-            self.gasolinera.canvas.delete(txt3)
-            txt4=self.gasolinera.canvas.create_text(400, 100 + self.id_coche * 20, text="Coche {} pagando".format(self.id_coche))
-            time.sleep(random.uniform(0.5, 1))
-            self.gasolinera.canvas.delete(txt4)
-            txt5=self.gasolinera.canvas.create_text(400, 100 + self.id_coche * 20, text="Coche {} saliendo de la gasolinera".format(self.id_coche))
-            self.gasolinera.liberar_surtidor(surtidor)
-            time.sleep(random.uniform(0.5, 1))
-            self.gasolinera.canvas.delete(txt5)
-        else:
-            self.gasolinera.canvas.create_text(400, 100 + self.id_coche * 20, text="Coche {} en cola".format(self.id_coche))
-            time.sleep(random.uniform(0.5, 1))
+        for i in range(self.gasolinera.num_surtidores):
+            if surtidor is not None and surtidor==i:
+                txt1=self.gasolinera.canvas.create_text(150 + i * 200, 100 + self.id_coche * 20, text="Coche {} en surtidor {}".format(self.id_coche, surtidor + 1))
+                time.sleep(random.uniform(0.5, 1))
+                self.gasolinera.canvas.delete(txt1)
+                txt2=self.gasolinera.canvas.create_text(150 + i * 200, 100 + self.id_coche * 20, text="Coche {} llenando el depósito".format(self.id_coche))
+                time.sleep(random.uniform(0.5, 1))
+                self.gasolinera.canvas.delete(txt2)
+                txt3=self.gasolinera.canvas.create_text(150 + i * 200, 100 + self.id_coche * 20, text="Coche {} en la cola de la caja".format(self.id_coche))
+                time.sleep(random.uniform(0.5, 1))
+                self.gasolinera.canvas.delete(txt3)
+                txt4=self.gasolinera.canvas.create_text(150 + i * 200, 100 + self.id_coche * 20, text="Coche {} pagando".format(self.id_coche))
+                time.sleep(random.uniform(0.5, 1))
+                self.gasolinera.canvas.delete(txt4)
+                txt5=self.gasolinera.canvas.create_text(150 + i * 200, 100 + self.id_coche * 20, text="Coche {} saliendo de la gasolinera".format(self.id_coche))
+                self.gasolinera.liberar_surtidor(surtidor)
+                time.sleep(random.uniform(0.5, 1))
+                self.gasolinera.canvas.delete(txt5)
+            else:
+                pass
 
 if __name__ == "__main__":
     # Crear ventana de tkinter
