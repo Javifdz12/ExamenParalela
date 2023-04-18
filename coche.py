@@ -3,7 +3,7 @@ import time
 import random
 
 class Coche(threading.Thread):
-    def __init__(self, id_coche, gasolinera):
+    def __init__(self, id_coche, gasolinera, ventana):
         threading.Thread.__init__(self)
         self.id_coche = id_coche
         self.gasolinera = gasolinera
