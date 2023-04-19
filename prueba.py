@@ -19,6 +19,14 @@ class Gasolinera:
             self.canvas.create_rectangle(x, y, x + 100, y + 100, fill="lightblue")
             self.canvas.create_text(x + 50, y + 50, text="Surtidor {}".format(i + 1))
 
+    def dibujar_caja(self):
+        self.canvas.create_rectangle(400,600,600,700,fill="lightblue")
+        self.canvas.create_text(580, 680, text="Caja")
+
+    def dibujar_salida(self):
+        self.canvas.create_rectangle(860,600,700,700,fill="red")
+        self.canvas.create_text(800, 660, text="salida")
+
     def ocupar_surtidor(self, id_coche):
         with self.mutex:
             for i in range(self.num_surtidores):
@@ -43,20 +51,20 @@ class Coche(threading.Thread):
         surtidor = self.gasolinera.ocupar_surtidor(self.id_coche)
         for i in range(self.gasolinera.num_surtidores):
             if surtidor is not None and surtidor==i:
-                txt1=self.gasolinera.canvas.create_text(150 + i * 200, 100 + self.id_coche * 20, text="Coche {} en surtidor {}".format(self.id_coche, surtidor + 1))
+                txt1=self.gasolinera.canvas.create_text(150 + i * 200, 250, text="Coche {} en surtidor {}".format(self.id_coche, surtidor + 1))
                 time.sleep(random.uniform(0.5, 1))
                 self.gasolinera.canvas.delete(txt1)
-                txt2=self.gasolinera.canvas.create_text(150 + i * 200, 100 + self.id_coche * 20, text="Coche {} llenando el depósito".format(self.id_coche))
+                txt2=self.gasolinera.canvas.create_text(150 + i * 200, 250, text="Coche {} llenando el depósito".format(self.id_coche))
                 time.sleep(random.uniform(0.5, 1))
                 self.gasolinera.canvas.delete(txt2)
                 self.gasolinera.liberar_surtidor(surtidor)
-                txt3=self.gasolinera.canvas.create_text(150 + i * 200, 100 + self.id_coche * 20, text="Coche {} en la cola de la caja".format(self.id_coche))
+                txt3=self.gasolinera.canvas.create_text(400, 750, text="Coche {} en la cola de la caja".format(self.id_coche))
                 time.sleep(random.uniform(0.5, 1))
                 self.gasolinera.canvas.delete(txt3)
-                txt4=self.gasolinera.canvas.create_text(150 + i * 200, 100 + self.id_coche * 20, text="Coche {} pagando".format(self.id_coche))
+                txt4=self.gasolinera.canvas.create_text(550, 750, text="Coche {} pagando".format(self.id_coche))
                 time.sleep(random.uniform(0.5, 1))
                 self.gasolinera.canvas.delete(txt4)
-                txt5=self.gasolinera.canvas.create_text(150 + i * 200, 100 + self.id_coche * 20, text="Coche {} saliendo de la gasolinera".format(self.id_coche))
+                txt5=self.gasolinera.canvas.create_text(800, 700, text="Coche {} saliendo de la gasolinera".format(self.id_coche))
                 time.sleep(random.uniform(0.5, 1))
                 self.gasolinera.canvas.delete(txt5)
             else:
@@ -72,9 +80,11 @@ if __name__ == "__main__":
 
     # Dibujar los surtidores en la ventana
     gasolinera.dibujar_surtidores()
+    gasolinera.dibujar_caja()
+    gasolinera.dibujar_salida()
 
     # Crear hilos de los coches y ejecutarlos
-    for i in range(10): # Puedes ajustar el número de coches aquí
+    for i in range(30): # Puedes ajustar el número de coches aquí
         coche = Coche(i+1, gasolinera)
         coche.start()
 
